@@ -135,7 +135,6 @@ function selectCharacter(character) {
 
   // 선택된 캐릭터의 한국어 이름 가져오기
   const characterDisplayName = characterNames[character] || "캐릭터";
-
   document.getElementById("character-name").innerText = characterDisplayName;
 
   // 캐릭터별 초기 상태 설정
@@ -145,6 +144,11 @@ function selectCharacter(character) {
   fatigue = stats.fatigue;
   energy = stats.energy;
   stress = stats.stress;
+
+  // 초기 레벨에 따른 이미지 설정
+  const characterImage = document.getElementById("character-image");
+  characterImage.src = `src/${character}/1.png`; // 1레벨 초기 이미지 설정
+  characterImage.alt = `${characterDisplayName}의 이미지`;
 
   // 특별 행동 버튼 설정
   const specialActionBtn = document.getElementById("special-action");
@@ -185,10 +189,6 @@ function selectCharacter(character) {
       specialActionBtn.style.display = "none"; // 조건에 맞지 않으면 숨기기
     }
   }
-
-  document.getElementById(
-    "character-image"
-  ).innerText = `${characterDisplayName}의 상태가 여기에 표시됩니다.`;
 
   startGame();
 }
@@ -303,6 +303,13 @@ function levelUp() {
   experienceRequired += 50;
   alert(`축하합니다! ${selectedCharacter}가 레벨 ${level}로 성장했습니다!`);
 
+  // 캐릭터 이미지 업데이트
+  const characterImage = document.getElementById("character-image");
+  if (level <= 5) {
+    // 레벨 5까지만 이미지 교체
+    characterImage.src = `src/${selectedCharacter}/${level}.png`;
+  }
+
   if (level === 5) {
     alert(
       `${selectedCharacter}가 최종 성장 단계에 도달했습니다! 모든 상태 변화가 멈춥니다.`
@@ -316,16 +323,24 @@ function levelUp() {
 function feedCharacter() {
   if (gameComplete) return;
 
-  hunger -= 10;
-  happiness += 5;
-  fatigue += 5;
-  energy += 10;
-  stress -= 5;
-  if (hunger < 0) hunger = 0;
-  if (happiness > 100) happiness = 100;
-  if (fatigue > 100) fatigue = 100;
-  if (energy > 100) energy = 100;
-  if (stress < 0) stress = 0;
+  if (hunger <= 0) {
+    alert("더 이상 배고픔을 줄일 수 없습니다. 스트레스가 증가합니다.");
+    stress += 10;
+    if (stress > 100) stress = 100;
+  } else {
+    hunger -= 10;
+    happiness += 5;
+    fatigue += 5;
+    energy += 10;
+    stress -= 5;
+
+    if (hunger < 0) hunger = 0;
+    if (happiness > 100) happiness = 100;
+    if (fatigue > 100) fatigue = 100;
+    if (energy > 100) energy = 100;
+    if (stress < 0) stress = 0;
+  }
+
   gainExperience(5);
   updateStatus();
 }
@@ -333,14 +348,22 @@ function feedCharacter() {
 function playWithCharacter() {
   if (gameComplete) return;
 
-  happiness += 10;
-  hunger += 5;
-  fatigue += 10;
-  energy -= 15;
-  if (hunger > 100) hunger = 100;
-  if (happiness > 100) happiness = 100;
-  if (fatigue > 100) fatigue = 100;
-  if (energy < 0) energy = 0;
+  if (energy <= 0) {
+    alert("에너지가 부족하여 놀아줄 수 없습니다. 스트레스가 증가합니다.");
+    stress += 10;
+    if (stress > 100) stress = 100;
+  } else {
+    happiness += 10;
+    hunger += 5;
+    fatigue += 10;
+    energy -= 15;
+
+    if (hunger > 100) hunger = 100;
+    if (happiness > 100) happiness = 100;
+    if (fatigue > 100) fatigue = 100;
+    if (energy < 0) energy = 0;
+  }
+
   gainExperience(8);
   updateStatus();
 }
@@ -348,14 +371,22 @@ function playWithCharacter() {
 function cleanCharacter() {
   if (gameComplete) return;
 
-  cleanliness += 20;
-  happiness += 5;
-  stress -= 10;
-  health += 10;
-  if (cleanliness > 100) cleanliness = 100;
-  if (happiness > 100) happiness = 100;
-  if (stress < 0) stress = 0;
-  if (health > 100) health = 100;
+  if (cleanliness >= 100) {
+    alert("캐릭터가 이미 충분히 깨끗합니다. 스트레스가 증가합니다.");
+    stress += 10;
+    if (stress > 100) stress = 100;
+  } else {
+    cleanliness += 20;
+    happiness += 5;
+    stress -= 10;
+    health += 10;
+
+    if (cleanliness > 100) cleanliness = 100;
+    if (happiness > 100) happiness = 100;
+    if (stress < 0) stress = 0;
+    if (health > 100) health = 100;
+  }
+
   gainExperience(4);
   updateStatus();
 }
@@ -363,14 +394,22 @@ function cleanCharacter() {
 function restCharacter() {
   if (gameComplete) return;
 
-  fatigue -= 20;
-  happiness += 5;
-  energy += 20;
-  health += 5;
-  if (fatigue < 0) fatigue = 0;
-  if (happiness > 100) happiness = 100;
-  if (energy > 100) energy = 100;
-  if (health > 100) health = 100;
+  if (fatigue <= 0) {
+    alert("캐릭터가 이미 충분히 쉬었습니다. 스트레스가 증가합니다.");
+    stress += 10;
+    if (stress > 100) stress = 100;
+  } else {
+    fatigue -= 20;
+    happiness += 5;
+    energy += 20;
+    health += 5;
+
+    if (fatigue < 0) fatigue = 0;
+    if (happiness > 100) happiness = 100;
+    if (energy > 100) energy = 100;
+    if (health > 100) health = 100;
+  }
+
   gainExperience(6);
   updateStatus();
 }
@@ -379,13 +418,14 @@ function disciplineCharacter() {
   if (gameComplete) return;
 
   if (stress >= 100) {
-    alert(`${selectedCharacter}가 너무 스트레스를 받아 죽었습니다. 게임 오버.`);
+    alert("캐릭터가 너무 스트레스를 받아 게임이 종료됩니다.");
     resetGame();
     return;
   }
 
   stress += 30;
   happiness -= 10;
+
   if (stress > 100) stress = 100;
   if (happiness < 0) happiness = 0;
 
@@ -461,22 +501,29 @@ function resetGame() {
 function walkCharacter() {
   if (gameComplete) return;
 
-  happiness += 15; // 산책하면 행복도가 증가
-  hunger += 10; // 산책 후 배고픔 증가
-  cleanliness -= 15; // 산책 후 청결도 감소
-  fatigue += 10; // 산책 후 피로도 증가
-  energy -= 10; // 산책 후 에너지 감소
-  stress -= 20; // 산책 후 스트레스 감소
+  if (energy <= 0) {
+    alert("에너지가 부족하여 산책할 수 없습니다. 스트레스가 증가합니다.");
+    stress += 10;
+    if (stress > 100) stress = 100;
+  } else {
+    happiness += 15;
+    hunger += 10;
+    cleanliness -= 15;
+    fatigue += 10;
+    energy -= 10;
+    stress -= 20;
 
-  if (happiness > 100) happiness = 100;
-  if (hunger > 100) hunger = 100;
-  if (cleanliness < 0) cleanliness = 0;
-  if (fatigue > 100) fatigue = 100;
-  if (energy < 0) energy = 0;
-  if (stress < 0) stress = 0;
+    if (happiness > 100) happiness = 100;
+    if (hunger > 100) hunger = 100;
+    if (cleanliness < 0) cleanliness = 0;
+    if (fatigue > 100) fatigue = 100;
+    if (energy < 0) energy = 0;
+    if (stress < 0) stress = 0;
+  }
 
-  gainExperience(7); // 경험치 추가
-  updateStatus(); // 상태 업데이트
+  gainExperience(7);
+  updateStatus();
 }
+
 // 초기 화면 설정
 goToMainMenu();
