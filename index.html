@@ -29,9 +29,8 @@
     <!-- 메인 게임 화면 -->
     <div id="game-screen" style="display: none">
       <h2 id="character-name">캐릭터 이름</h2>
-      <!-- 이미지 대신 텍스트로 상태를 표시 -->
-      <div id="character-image"></div>
       <div id="bubble" class="bubble" style="display: none"></div>
+      <div id="character-image"></div>
       <div id="chico-status">
         <div>
           <p>🌟 레벨: <span id="level">1</span></p>
@@ -68,11 +67,39 @@
         </div>
       </div>
       <div id="actions">
-        <button onclick="feedCharacter()">먹이 주기</button>
-        <button onclick="playWithCharacter()">놀아주기</button>
-        <button onclick="cleanCharacter()">목욕시키기</button>
-        <button onclick="restCharacter()">재우기</button>
-        <button onclick="disciplineCharacter()">훈육하기</button>
+        <button onclick="feedCharacter()">
+          <img src="src/feed.png" alt="먹이 주기" />
+          먹이 주기
+        </button>
+        <button onclick="playWithCharacter()">
+          <img src="src/play.png" alt="놀아주기" />
+          놀아주기
+        </button>
+        <button onclick="cleanCharacter()">
+          <img src="src/clean.png" alt="목욕시키기" />
+          목욕시키기
+        </button>
+        <button onclick="restCharacter()">
+          <img src="src/rest.png" alt="재우기" />
+          재우기
+        </button>
+        <button onclick="disciplineCharacter()">
+          <img src="src/discipline.png" alt="훈육하기" />
+          훈육하기
+        </button>
+        <button onclick="walkCharacter()">
+          <img src="src/walk.png" alt="산책하기" />
+          산책하기
+        </button>
+        <button id="special-action" style="display: none">
+          <img
+            id="special-action-img"
+            src=""
+            alt="특별 행동"
+            style="display: none"
+          />
+          <span id="special-action-text">특별 행동</span>
+        </button>
       </div>
       <button onclick="goToMainMenu()">메인 메뉴로 돌아가기</button>
     </div>

@@ -45,6 +45,13 @@ button:hover {
   transform: translateY(-2px);
 }
 
+button img {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
 #character-image {
   width: 150px;
   height: 150px;
@@ -97,36 +104,98 @@ progress {
   -webkit-appearance: none;
   appearance: none;
   margin: 5px 0;
+  border-radius: 10px; /* 모서리 둥글게 설정 */
+  overflow: hidden;
 }
 
+/* 기본 프로그래스 바 스타일 */
 progress::-webkit-progress-bar {
   background-color: #f3f3f3;
-  border-radius: 10px;
+  border-radius: 10px; /* 모서리 둥글게 설정 */
 }
 
 progress::-webkit-progress-value {
-  border-radius: 10px;
+  border-radius: 10px; /* 모서리 둥글게 설정 */
+  transition: width 0.3s ease; /* 부드러운 애니메이션 효과 */
 }
 
 progress::-moz-progress-bar {
-  border-radius: 10px;
+  border-radius: 10px; /* 모서리 둥글게 설정 */
+  transition: width 0.3s ease; /* 부드러운 애니메이션 효과 */
 }
 
-/* 프로그래스 바 색상 클래스 */
-.progress-red {
-  background-color: red;
+/* 프로그래스 바 색상 설정 (일반 능력치) */
+.progress-green::-webkit-progress-value {
+  background-color: green;
 }
 
-.progress-orange {
-  background-color: orange;
-}
-
-.progress-yellow {
+.progress-yellow::-webkit-progress-value {
   background-color: yellow;
 }
 
-.progress-green {
+.progress-orange::-webkit-progress-value {
+  background-color: orange;
+}
+
+.progress-red::-webkit-progress-value {
+  background-color: red;
+}
+
+/* 프로그래스 바 색상 설정 (반대 능력치 - 스트레스, 피로도) */
+.progress-red-reverse::-webkit-progress-value {
   background-color: green;
+}
+
+.progress-orange-reverse::-webkit-progress-value {
+  background-color: yellow;
+}
+
+.progress-yellow-reverse::-webkit-progress-value {
+  background-color: orange;
+}
+
+.progress-green-reverse::-webkit-progress-value {
+  background-color: red;
+}
+
+/* Firefox (Mozilla)용 스타일 설정 */
+.progress-green::-moz-progress-bar {
+  background-color: green;
+}
+
+.progress-yellow::-moz-progress-bar {
+  background-color: yellow;
+}
+
+.progress-orange::-moz-progress-bar {
+  background-color: orange;
+}
+
+.progress-red::-moz-progress-bar {
+  background-color: red;
+}
+
+.progress-red-reverse::-moz-progress-bar {
+  background-color: green;
+}
+
+.progress-orange-reverse::-moz-progress-bar {
+  background-color: yellow;
+}
+
+.progress-yellow-reverse::-moz-progress-bar {
+  background-color: orange;
+}
+
+.progress-green-reverse::-moz-progress-bar {
+  background-color: red;
+}
+
+#special-action img {
+  width: 24px; /* 적절한 크기로 설정 */
+  height: 24px; /* 적절한 크기로 설정 */
+  vertical-align: middle;
+  margin-right: 8px;
 }
 
 @media (max-width: 600px) {
