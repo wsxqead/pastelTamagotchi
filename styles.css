@@ -1,0 +1,152 @@
+/* 기본 스타일 */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  text-align: center;
+  padding: 20px;
+  margin: 0;
+}
+
+#main-menu,
+#character-selection,
+#game-screen {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1,
+h2 {
+  color: #333;
+}
+
+#main-menu h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 18px;
+  margin: 10px;
+  cursor: pointer;
+  background-color: #5c9cf2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background-color: #4a8ad4;
+  transform: translateY(-2px);
+}
+
+#character-image {
+  width: 150px;
+  height: 150px;
+  background-color: #ececec;
+  border-radius: 50%;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  color: #666;
+}
+
+#chico-status {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.bubble {
+  position: relative;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 10px;
+  color: #333;
+  max-width: 250px;
+  margin: 10px auto;
+  text-align: left;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 0.9em;
+  display: none;
+}
+
+.bubble:after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #ffffff transparent transparent transparent;
+  transform: translateX(-50%);
+}
+
+/* 프로그래스 바 스타일 */
+progress {
+  width: 100%;
+  height: 20px;
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 5px 0;
+}
+
+progress::-webkit-progress-bar {
+  background-color: #f3f3f3;
+  border-radius: 10px;
+}
+
+progress::-webkit-progress-value {
+  border-radius: 10px;
+}
+
+progress::-moz-progress-bar {
+  border-radius: 10px;
+}
+
+/* 프로그래스 바 색상 클래스 */
+.progress-red {
+  background-color: red;
+}
+
+.progress-orange {
+  background-color: orange;
+}
+
+.progress-yellow {
+  background-color: yellow;
+}
+
+.progress-green {
+  background-color: green;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  #main-menu,
+  #character-selection,
+  #game-screen {
+    padding: 15px;
+  }
+
+  button {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  #character-image {
+    width: 100px;
+    height: 100px;
+  }
+}

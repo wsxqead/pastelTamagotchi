@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>리코와 함께하는 치코 키우기</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- 메인 메뉴 -->
+    <div id="main-menu">
+      <h1>리코와 함께하는 치코 키우기</h1>
+      <button onclick="showCharacterSelection()">게임 시작</button>
+    </div>
+
+    <!-- 캐릭터 선택 화면 -->
+    <div id="character-selection" style="display: none">
+      <h2>육성할 캐릭터를 선택하세요</h2>
+      <div id="character-list">
+        <button onclick="selectCharacter('chiko')">치코</button>
+        <button onclick="selectCharacter('kurimi')">쿠리미</button>
+        <button onclick="selectCharacter('peto')">페토</button>
+        <button onclick="selectCharacter('inari')">이나리</button>
+      </div>
+      <button onclick="goToMainMenu()">이전 메뉴로 돌아가기</button>
+    </div>
+
+    <!-- 메인 게임 화면 -->
+    <div id="game-screen" style="display: none">
+      <h2 id="character-name">캐릭터 이름</h2>
+      <!-- 이미지 대신 텍스트로 상태를 표시 -->
+      <div id="character-image"></div>
+      <div id="bubble" class="bubble" style="display: none"></div>
+      <div id="chico-status">
+        <div>
+          <p>🌟 레벨: <span id="level">1</span></p>
+        </div>
+        <div>
+          <p>
+            📈 경험치: <span id="experience">0</span> /
+            <span id="experience-required">100</span>
+          </p>
+        </div>
+        <div>
+          <p>😊 행복:</p>
+          <progress id="happiness" value="50" max="100"></progress>
+        </div>
+        <div>
+          <p>🍽️ 배고픔:</p>
+          <progress id="hunger" value="50" max="100"></progress>
+        </div>
+        <div>
+          <p>🧼 청결도:</p>
+          <progress id="cleanliness" value="50" max="100"></progress>
+        </div>
+        <div>
+          <p>😴 피로도:</p>
+          <progress id="fatigue" value="50" max="100"></progress>
+        </div>
+        <div>
+          <p>⚡ 에너지:</p>
+          <progress id="energy" value="50" max="100"></progress>
+        </div>
+        <div>
+          <p>😡 스트레스:</p>
+          <progress id="stress" value="20" max="100"></progress>
+        </div>
+      </div>
+      <div id="actions">
+        <button onclick="feedCharacter()">먹이 주기</button>
+        <button onclick="playWithCharacter()">놀아주기</button>
+        <button onclick="cleanCharacter()">목욕시키기</button>
+        <button onclick="restCharacter()">재우기</button>
+        <button onclick="disciplineCharacter()">훈육하기</button>
+      </div>
+      <button onclick="goToMainMenu()">메인 메뉴로 돌아가기</button>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
