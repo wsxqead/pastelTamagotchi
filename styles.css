@@ -198,6 +198,22 @@ progress::-moz-progress-bar {
   margin-right: 8px;
 }
 
+.stat-change {
+  animation: statChange 0.5s ease-in-out;
+}
+
+@keyframes statChange {
+  0% {
+    background-color: inherit;
+  }
+  50% {
+    background-color: yellow;
+  }
+  100% {
+    background-color: inherit;
+  }
+}
+
 @media (max-width: 600px) {
   body {
     padding: 10px;

@@ -37,6 +37,17 @@ const characters = {
   },
 };
 
+// 쿨다운 시간을 관리하는 객체
+const cooldowns = {
+  chiko: 0,
+  kurimi: 0,
+  peto: 0,
+  inari: 0,
+};
+
+// 쿨다운 시간 (밀리초 단위)
+const COOLDOWN_TIME = 30000; // 30초
+
 // 화면 전환을 위한 함수들
 function showCharacterSelection() {
   document.getElementById("main-menu").style.display = "none";
@@ -58,13 +69,84 @@ function startGame() {
   updateStatus();
 }
 
-function highSpeedRun() {
-  if (selectedCharacter !== "chiko" || gameComplete) return; // 치코 전용 행동
+function updateSpecialActionButton() {
+  const specialActionBtn = document.getElementById("special-action");
+  const specialActionImg = document.getElementById("special-action-img");
+  const specialActionText = document.getElementById("special-action-text");
 
-  energy -= 30; // 에너지 많이 소비
-  experience += 20; // 많은 경험치 획득
-  happiness += 10; // 행복도가 증가
-  stress -= 10; // 스트레스 감소
+  if (specialActionImg && specialActionText && specialActionBtn) {
+    let actionText = "";
+    let actionFunction = null;
+    let imgSrc = "";
+
+    if (selectedCharacter === "chiko") {
+      actionText = "고속 질주";
+      actionFunction = highSpeedRun;
+      imgSrc = "src/highSpeedRun.png";
+      specialActionBtn.disabled = Date.now() < cooldowns.chiko; // 버튼 비활성화 처리
+      if (specialActionBtn.disabled) {
+        specialActionText.innerText = `${actionText} (쿨다운 중)`;
+      } else {
+        specialActionText.innerText = actionText;
+      }
+    } else if (selectedCharacter === "kurimi") {
+      actionText = "빠른 회복";
+      actionFunction = quickRecovery;
+      imgSrc = "src/quickRecovery.png";
+      specialActionBtn.disabled = Date.now() < cooldowns.kurimi;
+      if (specialActionBtn.disabled) {
+        specialActionText.innerText = `${actionText} (쿨다운 중)`;
+      } else {
+        specialActionText.innerText = actionText;
+      }
+    } else if (selectedCharacter === "peto") {
+      actionText = "건강한 식사";
+      actionFunction = healthyMeal;
+      imgSrc = "src/healthyMeal.png";
+      specialActionBtn.disabled = Date.now() < cooldowns.peto;
+      if (specialActionBtn.disabled) {
+        specialActionText.innerText = `${actionText} (쿨다운 중)`;
+      } else {
+        specialActionText.innerText = actionText;
+      }
+    } else if (selectedCharacter === "inari") {
+      actionText = "명상";
+      actionFunction = meditate;
+      imgSrc = "src/meditate.png";
+      specialActionBtn.disabled = Date.now() < cooldowns.inari;
+      if (specialActionBtn.disabled) {
+        specialActionText.innerText = `${actionText} (쿨다운 중)`;
+      } else {
+        specialActionText.innerText = actionText;
+      }
+    }
+
+    if (actionText && actionFunction && imgSrc) {
+      specialActionBtn.onclick = actionFunction;
+      specialActionImg.src = imgSrc;
+      specialActionImg.alt = actionText;
+      specialActionImg.style.display = "inline";
+      specialActionBtn.style.display = "inline-block";
+    } else {
+      specialActionBtn.style.display = "none";
+    }
+  }
+}
+
+// 캐릭터별 특수 행동
+// 각 특수 행동 함수에서 updateSpecialActionButton 호출 추가
+function highSpeedRun() {
+  if (selectedCharacter !== "chiko" || gameComplete) return;
+
+  if (Date.now() < cooldowns.chiko) {
+    alert("아직 고속 질주를 사용할 수 없습니다. 쿨다운 시간이 필요합니다.");
+    return;
+  }
+
+  energy -= 40;
+  experience += 15;
+  happiness += 10;
+  stress -= 10;
 
   if (energy < 0) energy = 0;
   if (happiness > 100) happiness = 100;
@@ -73,14 +155,22 @@ function highSpeedRun() {
   alert(
     "치코가 고속 질주를 했습니다! 많은 경험치를 얻었지만 에너지가 많이 소모되었습니다."
   );
+  cooldowns.chiko = Date.now() + COOLDOWN_TIME;
+
   updateStatus();
+  updateSpecialActionButton();
 }
 
 function quickRecovery() {
   if (selectedCharacter !== "kurimi" || gameComplete) return; // 쿠리미 전용 행동
 
+  if (Date.now() < cooldowns.kurimi) {
+    alert("아직 빠른 회복을 사용할 수 없습니다. 쿨다운 시간이 필요합니다.");
+    return;
+  }
+
   cleanliness += 30; // 청결도 크게 증가
-  stress += 10; // 스트레스 증가
+  stress += 15; // 스트레스 증가 (조정됨)
 
   if (cleanliness > 100) cleanliness = 100;
   if (stress > 100) stress = 100;
@@ -88,11 +178,19 @@ function quickRecovery() {
   alert(
     "쿠리미가 빠른 회복을 했습니다! 청결도가 크게 증가했지만 스트레스가 약간 증가했습니다."
   );
+
+  cooldowns.kurimi = Date.now() + COOLDOWN_TIME;
   updateStatus();
+  updateSpecialActionButton();
 }
 
 function healthyMeal() {
   if (selectedCharacter !== "peto" || gameComplete) return; // 페토 전용 행동
+
+  if (Date.now() < cooldowns.peto) {
+    alert("아직 건강한 식사를 사용할 수 없습니다. 쿨다운 시간이 필요합니다.");
+    return;
+  }
 
   health += 20; // 건강 회복
   hunger -= 20; // 배고픔 감소
@@ -103,14 +201,22 @@ function healthyMeal() {
   alert(
     "페토가 건강한 식사를 했습니다! 건강이 회복되고 배고픔이 줄어들었습니다."
   );
+
+  cooldowns.peto = Date.now() + COOLDOWN_TIME;
   updateStatus();
+  updateSpecialActionButton();
 }
 
 function meditate() {
   if (selectedCharacter !== "inari" || gameComplete) return; // 이나리 전용 행동
 
+  if (Date.now() < cooldowns.inari) {
+    alert("아직 명상을 사용할 수 없습니다. 쿨다운 시간이 필요합니다.");
+    return;
+  }
+
   stress -= 30; // 스트레스 크게 감소
-  fatigue += 10; // 피로도 약간 증가
+  fatigue += 15; // 피로도 약간 증가 (조정됨)
 
   if (stress < 0) stress = 0;
   if (fatigue > 100) fatigue = 100;
@@ -118,7 +224,10 @@ function meditate() {
   alert(
     "이나리가 명상을 했습니다! 스트레스가 크게 감소했지만 피로도가 조금 증가했습니다."
   );
+
+  cooldowns.inari = Date.now() + COOLDOWN_TIME;
   updateStatus();
+  updateSpecialActionButton();
 }
 
 function selectCharacter(character) {
@@ -233,30 +342,32 @@ function checkAchievements() {
 function setProgressBar(id, value) {
   const progressBar = document.getElementById(id);
   progressBar.value = value;
+  progressBar.classList.add("stat-change");
 
   // 스트레스와 피로도의 경우 색상 반대로 설정
   if (id === "stress" || id === "fatigue") {
     if (value > 75) {
-      progressBar.className = "progress-green-reverse"; // 높은 값일 때 초록 (부정적)
+      progressBar.className = "progress-green-reverse";
     } else if (value > 50) {
-      progressBar.className = "progress-yellow-reverse"; // 중간 값일 때 노랑 (부정적)
+      progressBar.className = "progress-yellow-reverse";
     } else if (value > 25) {
-      progressBar.className = "progress-orange-reverse"; // 낮은 값일 때 주황 (부정적)
+      progressBar.className = "progress-orange-reverse";
     } else {
-      progressBar.className = "progress-red-reverse"; // 매우 낮은 값일 때 빨강 (부정적)
+      progressBar.className = "progress-red-reverse";
     }
   } else {
-    // 일반 능력치에 대한 색상 설정
     if (value > 75) {
-      progressBar.className = "progress-green"; // 초록
+      progressBar.className = "progress-green";
     } else if (value > 50) {
-      progressBar.className = "progress-yellow"; // 노랑
+      progressBar.className = "progress-yellow";
     } else if (value > 25) {
-      progressBar.className = "progress-orange"; // 주황
+      progressBar.className = "progress-orange";
     } else {
-      progressBar.className = "progress-red"; // 빨강
+      progressBar.className = "progress-red";
     }
   }
+
+  setTimeout(() => progressBar.classList.remove("stat-change"), 500);
 }
 
 function checkNeeds() {
@@ -303,10 +414,18 @@ function levelUp() {
   experienceRequired += 50;
   alert(`축하합니다! ${selectedCharacter}가 레벨 ${level}로 성장했습니다!`);
 
-  // 캐릭터 이미지 업데이트
+  // 레벨 업 보상
+  if (level % 2 === 0) {
+    // 2 레벨마다 보상
+    happiness += 10;
+    health += 10;
+    if (happiness > 100) happiness = 100;
+    if (health > 100) health = 100;
+    alert(`${selectedCharacter}가 레벨업으로 인해 행복과 건강이 증가했습니다!`);
+  }
+
   const characterImage = document.getElementById("character-image");
   if (level <= 5) {
-    // 레벨 5까지만 이미지 교체
     characterImage.src = `src/${selectedCharacter}/${level}.png`;
   }
 
@@ -316,6 +435,8 @@ function levelUp() {
     );
     gameComplete = true;
   }
+
+  specialActionUsed[selectedCharacter] = false;
 
   updateStatus();
 }
