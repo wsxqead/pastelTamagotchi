@@ -5,13 +5,22 @@ body {
   text-align: center;
   padding: 20px;
   margin: 0;
+
+  /* Flexbox 설정을 추가하여 중앙 정렬 */
+  display: flex;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  min-height: 100vh; /* 최소 높이를 설정하여 화면 전체를 차지하도록 함 */
+  background-image: url(src/background.png);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #main-menu,
 #character-selection,
 #game-screen {
   max-width: 600px;
-  margin: 20px auto;
+  margin: 0 auto; /* 중앙 정렬을 위한 마진 설정 */
   padding: 20px;
   background-color: #ffffff;
   border-radius: 12px;
