@@ -32,7 +32,9 @@
     <!-- 메인 메뉴 -->
     <div id="main-menu">
       <h1>스텔라이브 파스텔 키우기</h1>
-      <button onclick="showCharacterSelection()">게임 시작</button>
+      <button class="game-start" onclick="showCharacterSelection()">
+        게임 시작
+      </button>
     </div>
 
     <!-- 캐릭터 선택 화면 -->
@@ -44,7 +46,9 @@
         <button onclick="selectCharacter('peto')">페토</button>
         <button onclick="selectCharacter('inari')">이나리</button>
       </div>
-      <button onclick="goToMainMenu()">이전 메뉴로 돌아가기</button>
+      <button class="go-main-menu" onclick="goToMainMenu()">
+        이전 메뉴로 돌아가기
+      </button>
     </div>
 
     <!-- 메인 게임 화면 -->
@@ -125,7 +129,16 @@
           <span id="special-action-text">특별 행동</span>
         </button>
       </div>
-      <button onclick="goToMainMenu()">메인 메뉴로 돌아가기</button>
+      <button class="go-back-button" onclick="goToMainMenu()">
+        메인 메뉴로 돌아가기
+      </button>
+    </div>
+    <!-- 커스텀 팝업 -->
+    <div id="custom-popup" class="custom-popup" style="display: none">
+      <div class="popup-content">
+        <p id="popup-message">메시지 내용</p>
+        <button onclick="closePopup()">확인</button>
+      </div>
     </div>
 
     <script src="script.js"></script>

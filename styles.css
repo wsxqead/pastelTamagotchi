@@ -1,6 +1,6 @@
 /* 기본 스타일 */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Arial", sans-serif;
   background-color: #f0f0f0;
   text-align: center;
   padding: 20px;
@@ -21,37 +21,67 @@ body {
 #game-screen {
   max-width: 600px;
   margin: 0 auto; /* 중앙 정렬을 위한 마진 설정 */
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.85); /* 약간 투명하게 */
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* 더 깊은 그림자 */
 }
 
 h1,
 h2 {
   color: #333;
+  font-weight: 700; /* 더 두껍게 */
+  margin-bottom: 20px;
 }
 
 #main-menu h1 {
   font-size: 2.5em;
   margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* 텍스트에 그림자 추가 */
+}
+
+.game-start {
+  margin: 0 auto;
+}
+
+.go-main-menu {
+  width: 100%;
+}
+
+.go-back-button {
+  margin: 20px auto;
+  width: 100%;
+  max-width: 220px;
 }
 
 button {
-  padding: 12px 24px;
+  padding: 12px 0;
   font-size: 18px;
-  margin: 10px;
+  width: 150px; /* 버튼의 고정 너비 설정 */
+  min-width: 150px; /* 최소 너비 설정 */
+  height: 50px;
   cursor: pointer;
   background-color: #5c9cf2;
   color: white;
   border: none;
-  border-radius: 8px;
-  transition: background-color 0.3s, transform 0.2s;
+  border-radius: 12px;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 button:hover {
   background-color: #4a8ad4;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+  transform: translateY(0px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 button img {
@@ -72,13 +102,52 @@ button img {
   justify-content: center;
   font-size: 1.2em;
   color: #666;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 이미지에 그림자 추가 */
 }
 
 #chico-status {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 15px;
   margin-bottom: 20px;
+}
+
+/* 캐릭터 선택 버튼 스타일 */
+#character-list {
+  display: flex; /* 플렉스박스 사용 */
+  flex-wrap: wrap; /* 버튼들을 여러 줄로 나열 */
+  justify-content: center; /* 가운데 정렬 */
+  gap: 10px; /* 버튼 간격 */
+  max-width: 350px; /* 최대 너비 설정하여 2열로 배치 */
+  margin: 0 auto 20px auto; /* 가운데 정렬 및 하단 여백 */
+}
+
+#character-list button {
+  width: calc(
+    50% - 5px
+  ); /* 각 버튼의 너비를 50%로 설정, 간격을 고려하여 5px씩 빼줌 */
+  padding: 12px 0;
+  font-size: 18px;
+  height: 50px; /* 버튼 높이 고정 */
+  cursor: pointer;
+  background-color: #5c9cf2;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 행동 버튼 스타일 */
+#actions {
+  display: flex; /* Flexbox를 사용하여 버튼들을 가로로 정렬 */
+  flex-wrap: wrap; /* 버튼이 화면 크기에 맞게 줄바꿈되도록 설정 */
+  gap: 10px; /* 버튼 사이의 간격 */
+  justify-content: center; /* 버튼들을 중앙 정렬 */
+  margin-top: 20px; /* 위쪽 여백 추가 */
 }
 
 .bubble {
@@ -200,6 +269,10 @@ progress::-moz-progress-bar {
   background-color: red;
 }
 
+#special-action {
+  width: 250px;
+}
+
 #special-action img {
   width: 24px; /* 적절한 크기로 설정 */
   height: 24px; /* 적절한 크기로 설정 */
@@ -209,6 +282,63 @@ progress::-moz-progress-bar {
 
 .stat-change {
   animation: statChange 0.5s ease-in-out;
+}
+
+/* 커스텀 팝업 스타일 */
+.custom-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 다른 요소 위에 표시되도록 */
+}
+
+.popup-content {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 80%;
+}
+
+.popup-content p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.popup-content button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #5c9cf2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  transition: background-color 0.3s, transform 0.2s;
+  margin: 0 auto;
+}
+
+.popup-content button:hover {
+  background-color: #4a8ad4;
+  transform: translateY(-2px);
+}
+
+#character-list button:hover {
+  background-color: #4a8ad4;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+#character-list button:active {
+  transform: translateY(0px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes statChange {
@@ -235,8 +365,17 @@ progress::-moz-progress-bar {
   }
 
   button {
-    width: 100%;
+    width: calc(50% - 10px); /* 화면 크기에 따라 버튼이 두 줄로 배치되도록 */
+    min-width: unset; /* 작은 화면에서는 최소 너비를 설정하지 않음 */
     font-size: 16px;
+  }
+
+  #character-list {
+    gap: 5px; /* 작은 화면에서 버튼 간격 줄이기 */
+  }
+
+  #actions {
+    gap: 5px; /* 작은 화면에서 버튼 간격 줄이기 */
   }
 
   #character-image {

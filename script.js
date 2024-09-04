@@ -139,7 +139,7 @@ function highSpeedRun() {
   if (selectedCharacter !== "chiko" || gameComplete) return;
 
   if (Date.now() < cooldowns.chiko) {
-    alert("아직 고속 질주를 사용할 수 없습니다. 쿨다운 시간이 필요합니다.");
+    showPopup("아직 고속 질주를 사용할 수 없습니다. 쿨다운 시간이 필요합니다.");
     return;
   }
 
@@ -152,7 +152,7 @@ function highSpeedRun() {
   if (happiness > 100) happiness = 100;
   if (stress < 0) stress = 0;
 
-  alert(
+  showPopup(
     "치코가 고속 질주를 했습니다! 많은 경험치를 얻었지만 에너지가 많이 소모되었습니다."
   );
   cooldowns.chiko = Date.now() + COOLDOWN_TIME;
@@ -165,7 +165,7 @@ function quickRecovery() {
   if (selectedCharacter !== "kurimi" || gameComplete) return; // 쿠리미 전용 행동
 
   if (Date.now() < cooldowns.kurimi) {
-    alert("아직 빠른 회복을 사용할 수 없습니다. 쿨다운 시간이 필요합니다.");
+    showPopup("아직 빠른 회복을 사용할 수 없습니다. 쿨다운 시간이 필요합니다.");
     return;
   }
 
@@ -175,7 +175,7 @@ function quickRecovery() {
   if (cleanliness > 100) cleanliness = 100;
   if (stress > 100) stress = 100;
 
-  alert(
+  showPopup(
     "쿠리미가 빠른 회복을 했습니다! 청결도가 크게 증가했지만 스트레스가 약간 증가했습니다."
   );
 
@@ -188,7 +188,9 @@ function healthyMeal() {
   if (selectedCharacter !== "peto" || gameComplete) return; // 페토 전용 행동
 
   if (Date.now() < cooldowns.peto) {
-    alert("아직 건강한 식사를 사용할 수 없습니다. 쿨다운 시간이 필요합니다.");
+    showPopup(
+      "아직 건강한 식사를 사용할 수 없습니다. 쿨다운 시간이 필요합니다."
+    );
     return;
   }
 
@@ -198,7 +200,7 @@ function healthyMeal() {
   if (health > 100) health = 100;
   if (hunger < 0) hunger = 0;
 
-  alert(
+  showPopup(
     "페토가 건강한 식사를 했습니다! 건강이 회복되고 배고픔이 줄어들었습니다."
   );
 
@@ -211,7 +213,7 @@ function meditate() {
   if (selectedCharacter !== "inari" || gameComplete) return; // 이나리 전용 행동
 
   if (Date.now() < cooldowns.inari) {
-    alert("아직 명상을 사용할 수 없습니다. 쿨다운 시간이 필요합니다.");
+    showPopup("아직 명상을 사용할 수 없습니다. 쿨다운 시간이 필요합니다.");
     return;
   }
 
@@ -221,7 +223,7 @@ function meditate() {
   if (stress < 0) stress = 0;
   if (fatigue > 100) fatigue = 100;
 
-  alert(
+  showPopup(
     "이나리가 명상을 했습니다! 스트레스가 크게 감소했지만 피로도가 조금 증가했습니다."
   );
 
@@ -374,8 +376,16 @@ function checkNeeds() {
   const bubble = document.getElementById("bubble");
   let needsMessage = "";
 
-  // 선택된 캐릭터의 이름을 가져오기
-  const characterName = selectedCharacter ? selectedCharacter : "캐릭터";
+  // 캐릭터 이름을 한국어로 매핑
+  const characterNames = {
+    chiko: "치코",
+    kurimi: "쿠리미",
+    peto: "페토",
+    inari: "이나리",
+  };
+
+  // 선택된 캐릭터의 한국어 이름 가져오기
+  const characterName = characterNames[selectedCharacter] || "캐릭터";
 
   if (hunger > 70) {
     needsMessage += `${characterName}가 배가 고파요. 먹이를 주세요! `;
@@ -412,7 +422,19 @@ function levelUp() {
   level++;
   experience = 0;
   experienceRequired += 50;
-  alert(`축하합니다! ${selectedCharacter}가 레벨 ${level}로 성장했습니다!`);
+
+  // 캐릭터 이름을 한국어로 매핑
+  const characterNames = {
+    chiko: "치코",
+    kurimi: "쿠리미",
+    peto: "페토",
+    inari: "이나리",
+  };
+
+  // 선택된 캐릭터의 한국어 이름 가져오기
+  const characterName = characterNames[selectedCharacter] || "캐릭터";
+
+  showPopup(`축하합니다! ${characterName}가 레벨 ${level}로 성장했습니다!`);
 
   // 레벨 업 보상
   if (level % 2 === 0) {
@@ -421,7 +443,7 @@ function levelUp() {
     health += 10;
     if (happiness > 100) happiness = 100;
     if (health > 100) health = 100;
-    alert(`${selectedCharacter}가 레벨업으로 인해 행복과 건강이 증가했습니다!`);
+    showPopup(`${characterName}가 레벨업으로 인해 행복과 건강이 증가했습니다!`);
   }
 
   const characterImage = document.getElementById("character-image");
@@ -430,8 +452,8 @@ function levelUp() {
   }
 
   if (level === 5) {
-    alert(
-      `${selectedCharacter}가 최종 성장 단계에 도달했습니다! 모든 상태 변화가 멈춥니다.`
+    showPopup(
+      `${characterName}가 최종 성장 단계에 도달했습니다! 모든 상태 변화가 멈춥니다.`
     );
     gameComplete = true;
   }
@@ -445,7 +467,7 @@ function feedCharacter() {
   if (gameComplete) return;
 
   if (hunger <= 0) {
-    alert("더 이상 배고픔을 줄일 수 없습니다. 스트레스가 증가합니다.");
+    showPopup("더 이상 배고픔을 줄일 수 없습니다. 스트레스가 증가합니다.");
     stress += 10;
     if (stress > 100) stress = 100;
   } else {
@@ -470,7 +492,7 @@ function playWithCharacter() {
   if (gameComplete) return;
 
   if (energy <= 0) {
-    alert("에너지가 부족하여 놀아줄 수 없습니다. 스트레스가 증가합니다.");
+    showPopup("에너지가 부족하여 놀아줄 수 없습니다. 스트레스가 증가합니다.");
     stress += 10;
     if (stress > 100) stress = 100;
   } else {
@@ -493,7 +515,7 @@ function cleanCharacter() {
   if (gameComplete) return;
 
   if (cleanliness >= 100) {
-    alert("캐릭터가 이미 충분히 깨끗합니다. 스트레스가 증가합니다.");
+    showPopup("캐릭터가 이미 충분히 깨끗합니다. 스트레스가 증가합니다.");
     stress += 10;
     if (stress > 100) stress = 100;
   } else {
@@ -516,7 +538,7 @@ function restCharacter() {
   if (gameComplete) return;
 
   if (fatigue <= 0) {
-    alert("캐릭터가 이미 충분히 쉬었습니다. 스트레스가 증가합니다.");
+    showPopup("캐릭터가 이미 충분히 쉬었습니다. 스트레스가 증가합니다.");
     stress += 10;
     if (stress > 100) stress = 100;
   } else {
@@ -539,7 +561,7 @@ function disciplineCharacter() {
   if (gameComplete) return;
 
   if (stress >= 100) {
-    alert("캐릭터가 너무 스트레스를 받아 게임이 종료됩니다.");
+    showPopup("캐릭터가 너무 스트레스를 받아 게임이 종료됩니다.");
     resetGame();
     return;
   }
@@ -556,7 +578,7 @@ function disciplineCharacter() {
 
 // 상태에 따라 텍스트 업데이트
 function updateEmotionText() {
-  const emotionText = document.getElementById("character-image").innerText;
+  const emotionText = document.getElementById("character-image");
 
   // 선택된 캐릭터의 이름 가져오기
   const characterName = selectedCharacter ? selectedCharacter : "캐릭터";
@@ -623,7 +645,7 @@ function walkCharacter() {
   if (gameComplete) return;
 
   if (energy <= 0) {
-    alert("에너지가 부족하여 산책할 수 없습니다. 스트레스가 증가합니다.");
+    showPopup("에너지가 부족하여 산책할 수 없습니다. 스트레스가 증가합니다.");
     stress += 10;
     if (stress > 100) stress = 100;
   } else {
@@ -644,6 +666,21 @@ function walkCharacter() {
 
   gainExperience(7);
   updateStatus();
+}
+
+// 커스텀 팝업을 표시하는 함수
+function showPopup(message) {
+  const popup = document.getElementById("custom-popup");
+  const popupMessage = document.getElementById("popup-message");
+
+  popupMessage.innerText = message;
+  popup.style.display = "flex";
+}
+
+// 커스텀 팝업을 닫는 함수
+function closePopup() {
+  const popup = document.getElementById("custom-popup");
+  popup.style.display = "none";
 }
 
 // 초기 화면 설정
